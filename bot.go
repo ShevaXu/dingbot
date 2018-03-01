@@ -3,9 +3,8 @@ package dingbot
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 
-	utils "github.com/ShevaXu/web-utils"
+	"github.com/ShevaXu/golang/web"
 	"github.com/pkg/errors"
 )
 
@@ -26,18 +25,16 @@ type SenderBot interface {
 // dingBot is the default implementation of SenderBot.
 type dingBot struct {
 	token string
-	cl    utils.HTTPClient
+	cl    web.Client
 }
 
 func (b *dingBot) Send(v interface{}) error {
-	data, err := json.Marshal(v)
+	req, err := web.NewJSONPost(fmt.Sprintf("%s?%s=%s", dingBotURL, paramToken, b.token), v)
 	if err != nil {
-		return errors.Wrap(err, "JSON marshal content")
+		return errors.Wrap(err, "make request")
 	}
 
-	_, _, body, err := b.cl.DoRequest("POST", fmt.Sprintf("%s?%s=%s", dingBotURL, paramToken, b.token), data, dingMaxTries, func(req *http.Request) {
-		req.Header.Add("Content-Type", "application/json; charset=utf-8")
-	})
+	_, _, body, err := b.cl.Do(req, dingMaxTries)
 	if err != nil {
 		return errors.Wrap(err, "dingbot request error")
 	}
@@ -58,7 +55,7 @@ func (b *dingBot) Send(v interface{}) error {
 type BotOption func(*dingBot)
 
 // WithClient makes the bot use a custom http client.
-func WithClient(cl utils.HTTPClient) BotOption {
+func WithClient(cl web.Client) BotOption {
 	return func(b *dingBot) {
 		if cl != nil {
 			b.cl = cl
@@ -70,7 +67,7 @@ func WithClient(cl utils.HTTPClient) BotOption {
 func NewDingBot(token string, ops ...BotOption) SenderBot {
 	bot := &dingBot{
 		token: token,
-		cl:    utils.StdClient(),
+		cl:    web.NewClient(), // use default setting
 	}
 	for _, op := range ops {
 		op(bot)

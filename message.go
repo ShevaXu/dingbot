@@ -1,6 +1,7 @@
 package dingbot
 
 // exported message types
+// see https://open-doc.dingtalk.com/docs/doc.htm
 const (
 	MsgTypeText       = "text"
 	MsgTypeLink       = "link"
@@ -9,10 +10,12 @@ const (
 	MsgTypeFeedCard   = "feedCard"
 )
 
+// TextMsg represents text.
 type TextMsg struct {
 	Content string `json:"content"`
 }
 
+// LinkMsg represents a link.
 type LinkMsg struct {
 	Text       string `json:"text"`
 	Title      string `json:"title"`
@@ -20,11 +23,13 @@ type LinkMsg struct {
 	MessageURL string `json:"messageUrl"`
 }
 
+// MdMsg represents markdown formatted text.
 type MdMsg struct {
 	Text  string `json:"text"`
 	Title string `json:"title"`
 }
 
+// ActionCardMsg represents a action card.
 type ActionCardMsg struct {
 	Text           string `json:"text"`
 	Title          string `json:"title"`
@@ -40,21 +45,25 @@ type ActionCardMsg struct {
 	} `json:"btns"`
 }
 
+// FeedLink represents a feed.
 type FeedLink struct {
 	Title      string `json:"title"`
 	PicURL     string `json:"picUrl"`
 	MessageURL string `json:"messageUrl"`
 }
 
+// FeedCardMsg represents a feed card.
 type FeedCardMsg struct {
 	Links []FeedLink `json:"links"`
 }
 
+// AtOption is the option for @someone.
 type AtOption struct {
 	AtMobiles []string `json:"atMobiles"`
 	IsAtAll   bool     `json:"isAtAll"`
 }
 
+// DingMessage is the JSON-encoded message to send.
 type DingMessage struct {
 	Msgtype    string        `json:"msgtype"`
 	Text       TextMsg       `json:"text,omitempty"`
@@ -65,6 +74,7 @@ type DingMessage struct {
 	At         AtOption      `json:"at,omitempty"`
 }
 
+// DingResponse is the response for sending msg.
 type DingResponse struct {
 	Errmsg  string `json:"errmsg"`
 	Errcode int    `json:"errcode"`

@@ -42,10 +42,10 @@ func (b *dingBot) Send(v interface{}) error {
 	var resp DingResponse
 	err = json.Unmarshal(body, &resp)
 	if err != nil {
-		return errors.Wrap(err, "JSON unmarshal response")
+		return errors.New("JSON unmarshal: " + string(body))
 	}
 	if resp.Errcode != dingCodeOk {
-		return errors.New("dingbot send error: " + resp.Errmsg)
+		return fmt.Errorf("dingbot send: %d - %s", resp.Errcode, resp.Errmsg)
 	}
 
 	return nil

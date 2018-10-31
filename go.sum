@@ -1,0 +1,4 @@
+github.com/ShevaXu/golang v0.3.0 h1:5+npQx0C8dvD6uG19A7B45nPZI5o5yDkzAGoHcyVDE8=
+github.com/ShevaXu/golang v0.3.0/go.mod h1:sl/w79ttzIffzzRzh9/3P9arIoHCFHWnSWn3pTXnOXg=
+github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
+github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
